@@ -1,7 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Task, type: :model do
-    let(:task) { build(:task) }
+    let!(:user) { create(:user)}
+    let!(:list) { create(:list, user: user) }
+    let(:task) { build(:task, user: user, list: list) }
+    
     it { expect(task).to be_valid }    
 
     it { is_expected.to belong_to(:user) }

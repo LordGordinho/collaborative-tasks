@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :list do
     name { Faker::Lorem.sentence }
-    user { User.last }
+    user 
   end
 end

@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe List, type: :model do
-    let(:list) { build(:list) }
+    let!(:user) { create(:user)}
+    let(:list) { build(:list, user: user) }
     it { expect(list).to be_valid } 
 
     it { is_expected.to belong_to(:user) }
