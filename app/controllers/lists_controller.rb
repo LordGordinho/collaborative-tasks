@@ -7,7 +7,7 @@ class ListsController < ApplicationController
     end
 
     def show
-        list = current_user.list.find(params[:id])
+        list = current_user.lists.find(params[:id])
         if list
             render json: { list: list } , status: 200
         end
