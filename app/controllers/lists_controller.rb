@@ -40,6 +40,11 @@ class ListsController < ApplicationController
         render json: {}, status: 204
     end
 
+    def get_all_tasks_on_list
+        tasks = current_user.lists.find(params[:id]).tasks
+        render json: { tasks: tasks}, status: 200
+    end
+
     private
 
     def list_params

@@ -34,7 +34,7 @@ RSpec.describe 'Task API' do
 
 
   describe 'GET /lists/:id' do
-    let(:task) { create(:list, user_id: user.id) }
+    let(:list) { create(:list, user_id: user.id) }
 
     before { get "/lists/#{list.id}", params: {}, headers: headers }
 
@@ -147,5 +147,23 @@ RSpec.describe 'Task API' do
       expect { List.find(list.id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
+
+  describe 'GET /lists/:id/get_all_tasks_on_list' do
+    let!(:list_2) { create(:list, user_id: user.id)}
+    let!(:task) { create(:task , user_id: user.id, list_id: list_2.id) }
+    let!(:user_2) { create(:user)}
+    let!(:task_2) { create(:task , user_id: user_2.id, list_id: list_2.id)}
+
+    before { get "/lists/#{list_2.id}/get_all_tasks_on_list/", params: {}, headers: headers }
+
+    it 'returns status code 200' do
+      expect(response).to have_http_status(200)
+    end
+
+    it 'returns the json for task' do
+      expect(json_body[:tasks].count).to eq(2)
+    end
+  end
+  
 
 end
