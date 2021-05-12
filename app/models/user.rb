@@ -8,4 +8,5 @@ class User < ActiveRecord::Base
   include DeviseTokenAuth::Concerns::User
 
   has_many :tasks, dependent: :destroy
+  has_many :lists, dependent: :destroy
 end
