@@ -1,0 +1,27 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: collaborative_tasks_d
+  username: postgres
+  password: 1amr00t
+  host: localhost
+  port: 5432
+
+test:
+  <<: *default
+  database: collaborative_tasks_t
+  username: postgres
+  password: 1amr00t
+  host: localhost
+  port: 5432
+
+
+production:
+  <<: *default
+  database: collaborative_tasks_p
+  username: collaborative_tasks
+  password: <%= ENV['COLLABORATIVE-TASKS_DATABASE_PASSWORD'] %>
