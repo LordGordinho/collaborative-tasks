@@ -43,7 +43,6 @@ RSpec.describe 'Task API' do
     end
 
     it 'returns the json for task' do
-      byebug
       expect(json_body[:list][:name]).to eq(list.name)
     end
   end
@@ -82,7 +81,7 @@ RSpec.describe 'Task API' do
       end
 
       it 'does not save the task in the database' do
-        expect( List.find_by(name: task_params[:name]) ).to be_nil
+        expect( List.find_by(name: list_params[:name]) ).to be_nil
       end
 
       it 'returns the json error for title' do
@@ -111,12 +110,12 @@ RSpec.describe 'Task API' do
       end
 
       it 'updates the task in the database' do
-        expect( List.find_by(name: task_params[:name]) ).not_to be_nil
+        expect( List.find_by(name: list_params[:name]) ).not_to be_nil
       end
     end
 
     context 'when the params are invalid' do
-      let(:List_params){ { name: ' '} }
+      let(:list_params){ { name: ' '} }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -127,7 +126,7 @@ RSpec.describe 'Task API' do
       end
 
       it 'does not update the task in the database' do
-        expect( Task.find_by(name: task_params[:name]) ).to be_nil
+        expect( List.find_by(name: list_params[:name]) ).to be_nil
       end
     end
   end

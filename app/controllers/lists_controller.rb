@@ -13,6 +13,33 @@ class ListsController < ApplicationController
         end
     end
 
+    def create
+        list = current_user.lists.build(list_params)
+
+        if list.save
+            render json: { list: list }, status: 201
+        else
+            render json: { errors: list.errors }, status: 422
+        end
+    end
+
+    def update
+        list = current_user.lists.find(params[:id])
+
+        if list.update(list_params)
+            render json: { list: list }, status: 200
+        else
+            render json: { errors: list.errors }, status: 422
+        end
+            
+    end
+
+    def destroy
+        list = current_user.lists.find(params[:id])
+        list.destroy
+        render json: {}, status: 204
+    end
+
     private
 
     def list_params
