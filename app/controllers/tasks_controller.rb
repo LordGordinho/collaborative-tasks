@@ -2,8 +2,8 @@ class TasksController < ApplicationController
     before_action :authenticate_user!
 
   def index
-		tasks = current_user.tasks
-		render json: { tasks: tasks }, status: 200
+    tasks = current_user.tasks
+    render json: { tasks: tasks }, status: 200
   end
 
   def show
