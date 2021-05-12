@@ -45,6 +45,14 @@ class ListsController < ApplicationController
         render json: { tasks: tasks}, status: 200
     end
 
+    def get_all_users_of_list
+        tasks = current_user.lists.find(params[:id]).tasks
+        users = []
+        tasks.each { |task| users << task.user}
+        users.uniq!
+        render json: { users: users }, status: 200
+    end
+
     private
 
     def list_params

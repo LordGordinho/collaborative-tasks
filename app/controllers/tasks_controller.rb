@@ -35,9 +35,6 @@ class TasksController < ApplicationController
     head 204
   end
 
-
-
-
   private
 
   def task_params

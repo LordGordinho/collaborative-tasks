@@ -26,7 +26,7 @@ RSpec.describe 'Task API' do
         expect(response).to have_http_status(200)
       end
 
-      it 'returns 5 tasks from database' do
+      it 'returns 5 lists from database' do
         expect(json_body[:lists].count).to eq(5)
       end      
     end
@@ -42,7 +42,7 @@ RSpec.describe 'Task API' do
       expect(response).to have_http_status(200)
     end
 
-    it 'returns the json for task' do
+    it 'returns the json for list' do
       expect(json_body[:list][:name]).to eq(list.name)
     end
   end
@@ -60,7 +60,7 @@ RSpec.describe 'Task API' do
         expect(response).to have_http_status(201)
       end
 
-      it 'saves the task in the database' do
+      it 'saves the list in the database' do
         expect( List.find_by(name: list_params[:name]) ).not_to be_nil
       end
 
@@ -105,11 +105,11 @@ RSpec.describe 'Task API' do
         expect(response).to have_http_status(200)
       end
 
-      it 'returns the json for updated task' do
+      it 'returns the json for updated list' do
         expect(json_body[:list][:name]).to eq(list_params[:name])
       end
 
-      it 'updates the task in the database' do
+      it 'updates the list in the database' do
         expect( List.find_by(name: list_params[:name]) ).not_to be_nil
       end
     end
@@ -121,11 +121,11 @@ RSpec.describe 'Task API' do
         expect(response).to have_http_status(422)
       end
 
-      it 'returns the json error for title' do
+      it 'returns the json error for name' do
         expect(json_body[:errors]).to have_key(:name)
       end
 
-      it 'does not update the task in the database' do
+      it 'does not update the list in the database' do
         expect( List.find_by(name: list_params[:name]) ).to be_nil
       end
     end
@@ -143,7 +143,7 @@ RSpec.describe 'Task API' do
       expect(response).to have_http_status(204)
     end
 
-    it 'removes the task from the database' do
+    it 'removes the list from the database' do
       expect { List.find(list.id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
@@ -160,10 +160,26 @@ RSpec.describe 'Task API' do
       expect(response).to have_http_status(200)
     end
 
-    it 'returns the json for task' do
+    it 'returns the json for tasks' do
       expect(json_body[:tasks].count).to eq(2)
     end
   end
   
+  describe 'GET /lists/:id/get_all_users_of_list' do
+    let!(:list_2) { create(:list, user_id: user.id)}
+    let!(:task) { create(:task , user_id: user.id, list_id: list_2.id) }
+    let!(:user_2) { create(:user)}
+    let!(:task_2) { create(:task , user_id: user_2.id, list_id: list_2.id)}
+    let!(:task_3) { create(:task , user_id: user_2.id, list_id: list_2.id)}
+    
+    before { get "/lists/#{list_2.id}/get_all_users_of_list/", params: {}, headers: headers }
 
+    it 'returns status code 200' do
+      expect(response).to have_http_status(200)
+    end
+
+    it 'returns the json for users' do
+      expect(json_body[:users].count).to eq(2)
+    end
+  end
 end
