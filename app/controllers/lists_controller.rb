@@ -46,10 +46,9 @@ class ListsController < ApplicationController
     end
 
     def get_all_users_of_list
-        tasks = current_user.lists.find(params[:id]).tasks
-        users = []
-        tasks.each { |task| users << task.user}
-        users.uniq!
+        users = User.joins(:tasks).where(:tasks => { list_id: params[:id] })
+        users = users.uniq
+        byebug
         render json: { users: users }, status: 200
     end
 
